@@ -98,24 +98,44 @@ router.put('/update/:codigo', async (req, res) => {
     if (!(/^\d+$/.test(codigo))) {
       return res.status(400).json({ error: 'El codigo debe ser un dígito válido.' });
     }
-    const { categoria, estado } = req.body;
-    if (/^\s*$/.test(categoria)) {
-      return res.status(400).json({
-        error: 'Se espera valor de categoría'
-      });
-    }
-    if (!(/^(ACT)|(INA)$/.test(estado))) {
-      return res.status(400).json({
-        error: 'Se espera valor de estado en ACT o INA'
-      });
-    }
+    const { email,
+      nombre,
+      avatar,
+      password,
+      estado } = req.body;
+      if (/^\s*$/.test(ElementInternals)) {
+        return res.status(400).json({
+          error: 'Se espera valor de correo'
+        });
+      }
+  
+      if (/^\s*$/.test(nombre)) {
+        return res.status(400).json({
+          error: 'Se espera valor de nombre'
+        });
+      }
+      if (/^\s*$/.test(avatar)) {
+        return res.status(400).json({
+          error: 'Se espera url de avatar'
+        });
+      }
+      if (/^\s*$/.test(password)) {
+        return res.status(400).json({
+          error: 'Se espera valor de contraseña correcta'
+        });
+      }
+      if (!(/^(ACT)|(INA)$/.test(estado))) {
+        return res.status(400).json({
+          error: 'Se espera valor de estado en ACT o INA'
+        });
+      }
 
-    const updateResult = await user.updateCategory({ codigo: parseInt(codigo), categoria, estado });
+    const updateResult = await user.updateUsuario({ codigo: parseInt(codigo), categoria, estado });
 
     if (!updateResult) {
-      return res.status(404).json({ error: 'Categoria no encontrada.' });
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
-    return res.status(200).json({ updatedCategory: updateResult });
+    return res.status(200).json({ updateUsuario: updateResult });
 
   } catch (ex) {
     console.error(ex);
@@ -131,12 +151,12 @@ router.delete('/delete/:codigo', async (req, res) => {
       return res.status(400).json({ error: 'El codigo debe ser un dígito válido.' });
     }
 
-    const deletedCategory = await user.deleteCategory({ codigo: parseInt(codigo) });
+    const deleteUsuario = await user.deleteUsuario({ codigo: parseInt(codigo) });
 
-    if (!deletedCategory) {
-      return res.status(404).json({ error: 'Categoria no encontrada.' });
+    if (!deleteUsuario) {
+      return res.status(404).json({ error: 'Usuario no encontrada.' });
     }
-    return res.status(200).json({ deletedCategory });
+    return res.status(200).json({ deleteUsuario });
 
   } catch (ex) {
     console.error(ex);
